@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DecodeLabs Project 2 - API Testing Kit</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background: #1e293b;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin: 5px 0;
+        width: 95%;
+        border-radius: 4px;
+        border: none;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      pre {
+        background: #020617;
+        padding: 15px;
+        border-radius: 6px;
+        color: #38bdf8;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>DecodeLabs Project 2: API Tester 🚀</h2>
+
+      <h3>1. Create Item (POST Endpoint)</h3>
+      <input
+        type="text"
+        id="itemTitle"
+        placeholder="Item Title (e.g. Flask Server)"
+      />
+      <input
+        type="text"
+        id="itemCategory"
+        placeholder="Category (e.g. Backend)"
+      />
+      <button onclick="createItem()">Send POST Request</button>
+
+      <h3>2. Fetch Items (GET Endpoint)</h3>
+      <button onclick="getItems()" style="background: #059669">
+        Send GET Request
+      </button>
+
+      <h3>Server API Response:</h3>
+      <pre id="responseOutput">// API JSON Response will appear here...</pre>
+    </div>
+
+    <script>
+      async function createItem() {
+        const title = document.getElementById("itemTitle").value;
+        const category = document.getElementById("itemCategory").value;
+
+        const res = await fetch("/api/items", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: title, category: category }),
+        });
+
+        const data = await res.json();
+        document.getElementById("responseOutput").innerText =
+          `HTTP Status Code: ${res.status}\n\n` + JSON.stringify(data, null, 2);
+      }
+
+      async function getItems() {
+        const res = await fetch("/api/items");
+        const data = await res.json();
+        document.getElementById("responseOutput").innerText =
+          `HTTP Status Code: ${res.status}\n\n` + JSON.stringify(data, null, 2);
+      }
+    </script>
+  </body>
+</html>
